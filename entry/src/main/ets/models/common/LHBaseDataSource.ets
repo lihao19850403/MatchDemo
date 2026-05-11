@@ -52,7 +52,10 @@ export class LHBasicDataSource<T> implements IDataSource {
    * 通知所有数据重载。
    */
   protected notifyDataReloaded() {
-    this.listeners.forEach((listener: DataChangeListener) => listener.onDataReloaded());
+    let flag: DataReloadOperation = {
+      type: DataOperationType.RELOAD
+    };
+    this.listeners.forEach((listener: DataChangeListener) => listener.onDatasetChange([flag]));
   }
 
   /**
@@ -60,7 +63,12 @@ export class LHBasicDataSource<T> implements IDataSource {
    * @param index 待插入数据的位置。
    */
   protected notifyDataAdded(index: number) {
-    this.listeners.forEach((listener: DataChangeListener) => listener.onDataAdd(index));
+    let flag: DataAddOperation = {
+      type: DataOperationType.ADD,
+      index: index,
+      count: 1
+    };
+    this.listeners.forEach((listener: DataChangeListener) => listener.onDatasetChange([flag]));
   }
 
   /**
@@ -83,7 +91,11 @@ export class LHBasicDataSource<T> implements IDataSource {
    * @param to 目标位置。
    */
   protected notifyDataMoved(from: number, to: number) {
-    this.listeners.forEach((listener: DataChangeListener) => listener.onDataMove(from, to));
+    let flag: DataMoveOperation = {
+      type: DataOperationType.MOVE,
+      index: { from: from, to: to }
+    };
+    this.listeners.forEach((listener: DataChangeListener) => listener.onDatasetChange([flag]));
   }
 
   /**
@@ -91,7 +103,12 @@ export class LHBasicDataSource<T> implements IDataSource {
    * @param index 待删除数据的位置。
    */
   protected notifyDataDeleted(index: number) {
-    this.listeners.forEach((listener: DataChangeListener) => listener.onDataDelete(index));
+    let flag: DataDeleteOperation = {
+      type: DataOperationType.DELETE,
+      index: index,
+      count: 1
+    };
+    this.listeners.forEach((listener: DataChangeListener) => listener.onDatasetChange([flag]));
   }
 
   /**
@@ -113,7 +130,11 @@ export class LHBasicDataSource<T> implements IDataSource {
    * @param index 发生变化的数据所在位置。
    */
   protected notifyDataChanged(index: number) {
-    this.listeners.forEach((listener: DataChangeListener) => listener.onDataChange(index));
+    let flag: DataChangeOperation = {
+      type: DataOperationType.CHANGE,
+      index: index
+    };
+    this.listeners.forEach((listener: DataChangeListener) => listener.onDatasetChange([flag]));
   }
 
   /**

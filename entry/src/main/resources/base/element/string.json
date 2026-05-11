@@ -69,6 +69,18 @@
       "value": "单词本"
     },
     {
+      "name": "home_tab_note_prepare_word_book",
+      "value": "正在准备单词本..."
+    },
+    {
+      "name": "home_tab_note_query_word",
+      "value": "请输入要查找的单词..."
+    },
+    {
+      "name": "home_tab_note_empty_tip",
+      "value": "暂无信息"
+    },
+    {
       "name": "home_tab_settings",
       "value": "设置"
     },

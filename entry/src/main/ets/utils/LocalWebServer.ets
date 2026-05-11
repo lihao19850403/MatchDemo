@@ -3,7 +3,6 @@ import { socket } from '@kit.NetworkKit';
 import { justReadRawFileSync, readRawFileResSync } from './common/filecenter/FileUtils';
 import { GlobalContext } from './common/GlobalContext';
 import fs from '@ohos.file.fs';
-import { JSON } from '@kit.ArkTS';
 
 export class LocalWebServer {
 
@@ -59,7 +58,6 @@ export class LocalWebServer {
       next();
     });
 
-    // this.server.serveStatic(this.serverResourcePath);
     this.prepareResource();
     this.prepareIndexFile();
   }
@@ -97,7 +95,6 @@ export class LocalWebServer {
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="http://${this.ip}:${this.port}/lesson/normalize.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@photo-sphere-viewer/core/index.min.css" />
-    <script src="http://${this.ip}:${this.port}/lesson/utils.js"></script>
 </head>
 <body>
 <div id="viewer" style="width: 100vw; height: 100vh;"></div>

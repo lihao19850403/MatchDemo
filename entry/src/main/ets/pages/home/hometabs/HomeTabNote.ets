@@ -1,6 +1,7 @@
 import { LHAppSettingsTextSizePlanModel } from "../../../models/common/LHAppSettingsTextSizePlanModel";
 import { LHCommonTitleBar } from "../../../views/common/LHCommonTitleBar";
 import { HomeMainTabBarBuilder } from '../../../views/HomeMainTabBarBuilder';
+import { HomeTabNoteContent } from "../../../views/HomeTabNoteContent";
 
 /**
  * 首页 - 单词本。
@@ -47,6 +48,9 @@ export struct HomeTabNote {
       .width('100%')
       .padding({ top: this.topSafeZoneHeightVp })
       .backgroundColor($r('app.color.main_selected_light_color'))
+      HomeTabNoteContent({
+        appTextSizePlan: this.appTextSizePlan
+      })
     }
     .width('100%')
     .height('100%')
