@@ -9,6 +9,7 @@ import { GlobalConfig, GLOBAL_CONFIG_KEY_WINDOW } from "../utils/common/GlobalCo
 import window from "@ohos.window";
 import { WordItem } from "../models/WordItem";
 import { WordListDataSource } from "../models/WordListDataSource";
+import { LocalTTSService } from "../utils/LocalTTSService";
 
 /** 单词本名称列表。 */
 const DICTIONARY_NAMES: string[] = ['CET4', 'CET6', '初中', '高中', '考研', '托福', 'SAT'];
@@ -97,9 +98,9 @@ export struct HomeTabNoteContent {
             Text($r('app.string.home_tab_note_empty_tip'))
               .fontSize(this.appTextSizePlan.unifiedDialogTitleTextSize)
           } else {
-            Grid() {
+            WaterFlow() {
               LazyForEach(this.curWordsList, (wordItem: WordItem, index: number) => {
-                GridItem() {
+                FlowItem() {
                   this.WordCard(wordItem)
                 }
               }, (wordItem: WordItem, index: number) => JSON.stringify(wordItem) + index)
@@ -110,6 +111,7 @@ export struct HomeTabNoteContent {
             .padding({ left: 8, right: 8, top: 4, bottom: 4 })
             .edgeEffect(EdgeEffect.None)
             .scrollBar(BarState.Off)
+            .cachedCount(4)
           }
         }
         .width('100%')
@@ -131,9 +133,21 @@ export struct HomeTabNoteContent {
   private WordCard(wordItem: WordItem) {
     Button() {
       Column({ space: 8 }) {
-        Text(wordItem.word)
-          .fontSize(this.appTextSizePlan.unifiedDialogTitleTextSize)
-          .fontWeight(FontWeight.Bold)
+        Row() {
+          Text(wordItem.word)
+            .fontSize(this.appTextSizePlan.unifiedDialogTitleTextSize)
+            .fontWeight(FontWeight.Bold)
+            .layoutWeight(1)
+          if (canIUse("SystemCapability.AI.TextToSpeech")) {
+            Image($r('app.media.ic_speak'))
+              .objectFit(ImageFit.Contain)
+              .width(25)
+              .height(25)
+          }
+        }
+        .width('100%')
+        .justifyContent(FlexAlign.Center)
+        .alignItems(VerticalAlign.Center)
         Text(wordItem.meaning)
           .fontSize(this.appTextSizePlan.unifiedDialogContentTextSize)
           .fontColor(Color.Gray)
@@ -145,6 +159,7 @@ export struct HomeTabNoteContent {
     }
     .borderRadius(4)
     .backgroundColor(Color.White)
+    .onClick(() => LocalTTSService.getInstance().speak(wordItem.word))
   }
 
   /**
