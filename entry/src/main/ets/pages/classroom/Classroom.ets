@@ -17,6 +17,9 @@ import window from '@ohos.window';
 import inspector from '@ohos.arkui.inspector';
 import { openCustomDialog } from '../../utils/common/DialogUtils';
 import { TakePhotoDialog } from '../../views/TakePhotoDialog';
+import { ClassroomArticle } from '../../views/ClassroomArticle';
+import { res2string } from '../../utils/common/Utils';
+import { LocalTTSService } from '../../utils/LocalTTSService';
 
 export namespace Classroom {
   export function go(params: Record<string, ResourceStr | undefined>) {
@@ -34,6 +37,9 @@ export const LESSON_INFO: string = 'url_params';
 
 /** 课程名称。 */
 export const LESSON_NAME: string = 'lesson_name';
+
+/** 文章内容。 */
+export const ARTICLE_CONTENT: string = 'article_content';
 
 /** 屏幕中WebView组件的ID。 */
 const CLASSROOM_VIEWER_ID: string = 'classroom_viewer';
@@ -54,6 +60,9 @@ struct ClassroomComponent {
   /** 课程名称。 */
   private lessonName?: ResourceStr;
 
+  /** 文章内容。 */
+  private articleContent?: ResourceStr;
+
   /** 浏览器控制器。 */
   private controller?: webview.WebviewController;
 
@@ -68,6 +77,9 @@ struct ClassroomComponent {
 
   /** WebView组件绘制完成监听。 */
   @State private drawComplete: boolean = false;
+
+  /** 文章是否可见。 */
+  @State private articleVisible: boolean = false;
 
   /** WebView组件绘制进度监听。 */
   private drawListener?: inspector.ComponentObserver;
@@ -91,7 +103,7 @@ struct ClassroomComponent {
 
   build() {
     NavDestination() {
-      Stack({ alignContent: Alignment.Top }) {
+      RelativeContainer() {
         LHWebView({
           src: this.url,
           mobileMode: true,
@@ -115,6 +127,60 @@ struct ClassroomComponent {
         .padding({ top: this.topSafeZoneHeightVp })
         .backgroundColor(Color.White)
         .visibility(this.titleVisible ? Visibility.Visible : Visibility.None)
+        .alignRules({
+          top: { anchor: '__container__', align: VerticalAlign.Top }
+        })
+        if (this.articleContent) {
+          ClassroomArticle({
+            appTextSizePlan: this.appTextSizePlan,
+            articleContent: res2string(this.articleContent)
+          })
+            .visibility(this.articleVisible ? Visibility.Visible : Visibility.None)
+            .margin({
+              bottom: Math.max(this.bottomSafeZoneHeightVp, 16),
+              left: 16,
+              right: 16
+            })
+            .alignRules({
+              bottom: { anchor: '__container__', align: VerticalAlign.Bottom },
+              start: { anchor: '__container__', align: HorizontalAlign.Start },
+              end: { anchor: '__container__', align: HorizontalAlign.End }
+            })
+        }
+        Button() {
+          Image($r('app.media.ic_book'))
+            .objectFit(ImageFit.Contain)
+            .width(30)
+            .height(30)
+        }
+        .width(50)
+        .height(50)
+        .borderRadius(25)
+        .borderWidth(2)
+        .borderColor($r('app.color.main_selected_color'))
+        .backgroundColor(Color.White)
+        .margin({
+          bottom: Math.max(this.bottomSafeZoneHeightVp, 16),
+          right: 16
+        })
+        .opacity(0.8)
+        .alignRules({
+          bottom: { anchor: '__container__', align: VerticalAlign.Bottom },
+          end: { anchor: '__container__', align: HorizontalAlign.End }
+        })
+        .onClick(() => {
+          if (this.articleContent) {
+            this.articleVisible = !this.articleVisible;
+            LocalTTSService.getInstance().stop();
+            if (this.articleVisible) {
+              setTimeout(() => {
+                if (this.articleContent) {
+                  LocalTTSService.getInstance().speak(res2string(this.articleContent));
+                }
+              }, 0);
+            }
+          }
+        })
       }
       .width('100%')
       .height('100%')
@@ -127,6 +193,7 @@ struct ClassroomComponent {
         RouterUtils.navGetParams(context) as Record<string, ResourceStr | undefined>;
       this.url = urlParams[LESSON_INFO];
       this.lessonName = urlParams[LESSON_NAME];
+      this.articleContent = urlParams[ARTICLE_CONTENT];
       this.appTextSizePlan = GlobalAppSettings.textSizePlan();
       emitter.on(GLOBAL_APP_SETTINGS_CHANGED_EVENT, this.onGlobalAppSettingsChangedEvent);
       ScreenObserver.subscribe(this.getUIContext(), (screenStatus: ScreenStatusInfo) => {

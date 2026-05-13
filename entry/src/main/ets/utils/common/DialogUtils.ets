@@ -20,6 +20,8 @@ export interface LHAlertDialogParams {
   title?: ResourceStr,
   /** 内容，若不指定内容，则内容区域不会出现在对话框中。 */
   content?: ResourceStr,
+  /** 内容对其格式，若不指定，则内容居中对齐。 */
+  contentAlign?: TextAlign,
   /** 取消按钮动作，若不指定取消按钮动作，则取消按钮不会出现在对话框中。 */
   cancelAction?: Callback<void, void>,
   /** 确定按钮动作，若不指定确定按钮动作，则确定按钮不会出现在对话框中。 */
@@ -44,6 +46,7 @@ function alertDialogBuilder(params: Object, closeCallback: Callback<void, void>)
   LHAlertDialogView({
     title: (params as LHAlertDialogParams).title,
     content: (params as LHAlertDialogParams).content,
+    contentAlign: (params as LHAlertDialogParams).contentAlign,
     cancelAction: (params as LHAlertDialogParams).cancelAction,
     confirmAction: (params as LHAlertDialogParams).confirmAction,
     closeCallback: closeCallback

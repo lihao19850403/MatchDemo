@@ -1,4 +1,4 @@
-import { Classroom, LESSON_INFO, LESSON_NAME } from "../pages/classroom/Classroom";
+import { ARTICLE_CONTENT, Classroom, LESSON_INFO, LESSON_NAME } from "../pages/classroom/Classroom";
 import { res2string } from "../utils/common/Utils";
 import { LocalWebServer } from "../utils/LocalWebServer";
 
@@ -31,6 +31,7 @@ const CONTENTS: Array<LessonsModel> = [
       const params: Record<string, ResourceStr | undefined> = {}
       params[LESSON_INFO] = makeParams(res2string($r('app.string.lesson_big_ben')));
       params[LESSON_NAME] = $r('app.string.lesson_big_ben');
+      params[ARTICLE_CONTENT] = $r('app.string.lesson_big_ben_article')
       Classroom.go(params);
     }
   },
@@ -42,6 +43,7 @@ const CONTENTS: Array<LessonsModel> = [
       const params: Record<string, ResourceStr | undefined> = {}
       params[LESSON_INFO] = makeParams(res2string($r('app.string.lesson_ny_harbor')));
       params[LESSON_NAME] = $r('app.string.lesson_ny_harbor');
+      params[ARTICLE_CONTENT] = $r('app.string.lesson_ny_harbor_article')
       Classroom.go(params);
     }
   },

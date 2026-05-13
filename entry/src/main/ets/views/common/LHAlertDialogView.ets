@@ -16,6 +16,8 @@ export struct LHAlertDialogView {
   title?: ResourceStr = undefined;
   /** 内容。 */
   content?: ResourceStr = undefined;
+  /** 内容对齐格式。 */
+  contentAlign: TextAlign = TextAlign.Center;
   /** 取消按钮动作。 */
   cancelAction?: Callback<void, void> = undefined;
   /** 确定按钮动作。 */
@@ -73,7 +75,7 @@ export struct LHAlertDialogView {
             Text(this.content)
               .width('100%')
               .fontSize(this.appTextSizePlan.unifiedDialogContentTextSize)
-              .textAlign(TextAlign.Center)
+              .textAlign(this.contentAlign)
               .padding(12)
           }
           // 按钮区。

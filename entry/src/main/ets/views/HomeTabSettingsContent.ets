@@ -1,4 +1,5 @@
 import { LHAppSettingsTextSizePlanModel } from "../models/common/LHAppSettingsTextSizePlanModel";
+import { openAlertDialog } from "../utils/common/DialogUtils";
 import { ScreenObserver, ScreenStatusInfo } from "../utils/common/uiobserver/ScreenObserver";
 import { getAppInfo, res2string } from "../utils/common/Utils";
 
@@ -46,13 +47,44 @@ export struct HomeTabSettingsContent {
           .width('100%')
           .height(30)
           .flexShrink(1)
+        Column({ space: 4 }) {
+          this.InfoBanner($r('app.string.home_tab_settings_about_us'), $r('app.string.home_tab_settings_about_us_content'))
+          this.InfoBanner($r('app.string.home_tab_settings_about_software'), $r('app.string.home_tab_settings_about_software_content'))
+        }
+        Blank()
+          .width('100%')
+          .height(50)
+          .flexGrow(1)
       }
       .justifyContent(FlexAlign.Start)
       .alignItems(HorizontalAlign.Center)
+      .padding(8)
     }
     .width('100%')
     .height('100%')
     .scrollBar(BarState.Off)
     .flexShrink(1)
+  }
+
+  @Builder
+  private InfoBanner(bannerName: ResourceStr, content: ResourceStr) {
+    Button() {
+      Row() {
+        Text(bannerName)
+          .fontSize(this.appTextSizePlan.unifiedDialogContentTextSize)
+      }
+      .width('100%')
+      .justifyContent(FlexAlign.Start)
+      .alignItems(VerticalAlign.Center)
+      .padding(8)
+    }
+    .borderRadius(4)
+    .backgroundColor(Color.White)
+    .onClick(() => openAlertDialog({
+      title: bannerName,
+      content: content,
+      contentAlign: TextAlign.Start,
+      confirmAction: () => {}
+    }))
   }
 }
