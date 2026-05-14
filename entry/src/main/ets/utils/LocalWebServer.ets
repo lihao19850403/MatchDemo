@@ -73,6 +73,26 @@ export class LocalWebServer {
       let normalCssFileContent = justReadRawFileSync('classroom/styles/normalize.css');
       fs.writeSync(normalCssFile.fd, normalCssFileContent);
       fs.closeSync(normalCssFile);
+      // 写入photoSphereViewerCss。
+      let photoSphereViewerCssFile = fs.openSync(this.serverResourcePath + '/photo-sphere-viewer.core.index.min.css', fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
+      let photoSphereViewerCssFileContent = justReadRawFileSync('classroom/styles/photo-sphere-viewer.core.index.min.css');
+      fs.writeSync(photoSphereViewerCssFile.fd, photoSphereViewerCssFileContent);
+      fs.closeSync(photoSphereViewerCssFile);
+      // 写入threeCoreJs。
+      let threeCoreJsFile = fs.openSync(this.serverResourcePath + '/three.core.js', fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
+      let threeCoreJsFileContent = justReadRawFileSync('classroom/includes/three.core.js');
+      fs.writeSync(threeCoreJsFile.fd, threeCoreJsFileContent);
+      fs.closeSync(threeCoreJsFile);
+      // 写入threeModuleJs。
+      let threeModuleJsFile = fs.openSync(this.serverResourcePath + '/three.module.js', fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
+      let threeModuleJsFileContent = justReadRawFileSync('classroom/includes/three.module.js');
+      fs.writeSync(threeModuleJsFile.fd, threeModuleJsFileContent);
+      fs.closeSync(threeModuleJsFile);
+      // 写入photoSphereViewerJs。
+      let photoSphereViewerJsFile = fs.openSync(this.serverResourcePath + '/photo-sphere-viewer.core.index.module.js', fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
+      let photoSphereViewerJsContent = justReadRawFileSync('classroom/includes/photo-sphere-viewer.core.index.module.js');
+      fs.writeSync(photoSphereViewerJsFile.fd, photoSphereViewerJsContent);
+      fs.closeSync(photoSphereViewerJsFile);
       // 写入图片资源。
       ['伦敦-大本钟.jpg', '纽约海港.jpg'].forEach((picName: string) => {
         let demoFile = fs.openSync(this.serverResourcePath + '/' + picName, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
@@ -94,15 +114,15 @@ export class LocalWebServer {
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="http://${this.ip}:${this.port}/lesson/normalize.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@photo-sphere-viewer/core/index.min.css" />
+    <link rel="stylesheet" href="http://${this.ip}:${this.port}/lesson/photo-sphere-viewer.core.index.min.css" />
 </head>
 <body>
 <div id="viewer" style="width: 100vw; height: 100vh;"></div>
 <script type="importmap">
     {
         "imports": {
-            "three": "https://cdn.jsdelivr.net/npm/three/build/three.module.js",
-            "@photo-sphere-viewer/core": "https://cdn.jsdelivr.net/npm/@photo-sphere-viewer/core/index.module.js"
+            "three": "http://${this.ip}:${this.port}/lesson/three.module.js",
+            "@photo-sphere-viewer/core": "http://${this.ip}:${this.port}/lesson/photo-sphere-viewer.core.index.module.js"
         }
     }
 </script>
