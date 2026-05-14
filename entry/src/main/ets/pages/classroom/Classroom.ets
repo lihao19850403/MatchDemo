@@ -222,6 +222,7 @@ struct ClassroomComponent {
       emitter.off(GLOBAL_APP_SETTINGS_CHANGED_EVENT, this.onGlobalAppSettingsChangedEvent);
       ScreenObserver.unsubscribe(this.getUIContext());
       this.drawListener?.off('draw', this.onDrawCompleteCallback);
+      LocalTTSService.getInstance().stop();
     })
   }
 

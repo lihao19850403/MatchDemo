@@ -34,7 +34,7 @@ export struct ClassroomArticle {
     .height(200)
     .scrollBar(BarState.Off)
     .flexShrink(1)
-    .borderRadius(4)
+    .borderRadius({ topLeft: 4, topRight: 4, bottomLeft: 4, bottomRight: 25 })
     .borderWidth(2)
     .borderColor($r('app.color.main_selected_color'))
     .backgroundColor(Color.White)
